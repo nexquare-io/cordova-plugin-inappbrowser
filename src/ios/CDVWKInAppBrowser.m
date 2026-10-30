@@ -1001,7 +1001,13 @@ BOOL isExiting = FALSE;
         [self.toolbar setItems:@[self.closeButton, flexibleSpaceButton, self.backButton, fixedSpaceButton, self.forwardButton]];
     }
     
-    self.view.backgroundColor = [UIColor clearColor];
+    // iOS 26 fix: UIToolbar no longer draws a background and ignores barTintColor, so a
+    // clear view let the app underneath show through the toolbar area.
+    if (@available(iOS 26.0, *)) {
+        self.view.backgroundColor = [UIColor whiteColor];
+    } else {
+        self.view.backgroundColor = [UIColor clearColor];
+    }
     [self.view addSubview:self.toolbar];
     [self.view addSubview:self.addressLabel];
     [self.view addSubview:self.spinner];
